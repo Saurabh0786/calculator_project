@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react';
 
           if (p > 0 && r > 0 && t > 0) {
             const i = r / 100;
-            const futureValue = p * Math.pow(1 + i, t);
+            const futureValue = p * Math.pow(1 + i, t); //updated this line
             const totalInvestment = p;
             const wealthGained = futureValue - totalInvestment;
 
