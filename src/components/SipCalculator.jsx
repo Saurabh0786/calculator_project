@@ -9,7 +9,6 @@
     const [monthlyInvestment, setMonthlyInvestment] = useState('10000');
     const [interestRate, setInterestRate] = useState('12');
     const [period, setPeriod] = useState('10');
-    const [stepUp, setStepUp] = useState('10'); // New state for annual step-up percentage
     const [result, setResult] = useState(null);
     const [chartData, setChartData] = useState(null);
 
@@ -17,35 +16,22 @@
       const p = Number(monthlyInvestment);
       const r = Number(interestRate);
       const t = Number(period);
-      const annualStepUpPercent = Number(stepUp);
 
       if (p > 0 && r > 0 && t > 0) {
         const monthlyRate = r / 12 / 100;
-        let futureValue = 0;
-        let totalInvestment = 0;
-        let currentMonthlySip = p;
-
-        // Loop through each year to apply the step-up
-        for (let year = 0; year < t; year++) {
-          // Calculate value for 12 months at the current SIP amount
-          for (let month = 0; month < 12; month++) {
-            totalInvestment += currentMonthlySip;
-            futureValue = (futureValue + currentMonthlySip) * (1 + monthlyRate);
-          }
-          // Increase the SIP amount for the next year
-          currentMonthlySip = currentMonthlySip * (1 + (annualStepUpPercent / 100));
-        }
-
+        const numberOfMonths = t * 12;
+        const futureValue = p * ((Math.pow(1 + monthlyRate, numberOfMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+        const totalInvestment = p * numberOfMonths;
         const wealthGained = futureValue - totalInvestment;
 
         setResult({
-          futureValue: futureValue.toFixed(2),
-          totalInvestment: totalInvestment.toFixed(2),
-          wealthGained: wealthGained.toFixed(2),
+          totalValue: futureValue.toFixed(2),
+          investedAmount: totalInvestment.toFixed(2),
+          estReturns: wealthGained.toFixed(2),
         });
 
         setChartData({
-          labels: ['Total Investment', 'Wealth Gained'],
+          labels: ['Invested Amount', 'Est. Returns'],
           datasets: [
             {
               label: 'Value (₹)',
@@ -64,48 +50,52 @@
 
     useEffect(() => {
       calculateSip();
-    }, [monthlyInvestment, interestRate, period, stepUp]);
+    }, [monthlyInvestment, interestRate, period]);
 
     return (
       <Card className="calculator-card">
         <Card.Body>
-          <Card.Title className="text-center mb-4">Step-up SIP Calculator</Card.Title>
+          <Card.Title className="text-center mb-4">SIP Calculator</Card.Title>
           <Form>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Monthly Investment (₹)</Form.Label>
-              <Col sm={6}>
-                <Form.Control type="text" value={monthlyInvestment} onChange={(e) => setMonthlyInvestment(e.target.value)} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Expected Return Rate (% p.a.)</Form.Label>
-              <Col sm={6}>
-                <Form.Control type="text" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} />
-              </Col>
-            </Form.Group>
-            {/* New Input Field for Step-up */}
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Annual Step-up (% )</Form.Label>
-              <Col sm={6}>
-                <Form.Control type="text" value={stepUp} onChange={(e) => setStepUp(e.target.value)} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Time Period (Years)</Form.Label>
-              <Col sm={6}>
-                <Form.Control type="text" value={period} onChange={(e) => setPeriod(e.target.value)} />
-              </Col>
-            </Form.Group>
+            <div className="slider-box">
+              <Form.Group as={Row} className="align-items-center">
+                <Form.Label column lg={6}>Monthly Investment</Form.Label>
+                <Col lg={6} className="text-end">
+                  <span className="slider-value">₹{Number(monthlyInvestment).toLocaleString()}</span>
+                </Col>
+              </Form.Group>
+              <Form.Range value={monthlyInvestment} onChange={(e) => setMonthlyInvestment(e.target.value)} min="500" max="100000" step="500" />
+            </div>
+
+            <div className="slider-box">
+              <Form.Group as={Row} className="align-items-center">
+                <Form.Label column lg={6}>Expected Return Rate</Form.Label>
+                <Col lg={6} className="text-end">
+                  <span className="slider-value">{interestRate}%</span>
+                </Col>
+              </Form.Group>
+              <Form.Range value={interestRate} onChange={(e) => setInterestRate(e.target.value)} min="1" max="30" step="0.5" />
+            </div>
+
+            <div className="slider-box">
+              <Form.Group as={Row} className="align-items-center">
+                <Form.Label column lg={6}>Time Period</Form.Label>
+                <Col lg={6} className="text-end">
+                  <span className="slider-value">{period} Yrs</span>
+                </Col>
+              </Form.Group>
+              <Form.Range value={period} onChange={(e) => setPeriod(e.target.value)} min="1" max="40" step="1" />
+            </div>
           </Form>
 
           {result && chartData && (
             <Row className="mt-4 d-flex align-items-center">
               <Col md={6}>
                 <Alert variant="success" className="result-alert h-100">
-                  <div><strong>Future Value:</strong> ₹{result.futureValue}</div>
+                  <div><strong>Total Value:</strong> ₹{result.totalValue}</div>
                   <hr/>
-                  <div><strong>Total Investment:</strong> ₹{result.totalInvestment}</div>
-                  <div><strong>Wealth Gained:</strong> ₹{result.wealthGained}</div>
+                  <div><strong>Invested Amount:</strong> ₹{result.investedAmount}</div>
+                  <div><strong>Est. Returns:</strong> ₹{result.estReturns}</div>
                 </Alert>
               </Col>
               <Col md={6}>
@@ -116,6 +106,7 @@
         </Card.Body>
       </Card>
     );
+  
   }
 
   export default SipCalculator;

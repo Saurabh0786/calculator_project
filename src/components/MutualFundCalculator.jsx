@@ -38,20 +38,20 @@
           <Card.Title className="text-center mb-4">Mutual Fund (Lump Sum) Calculator</Card.Title>
           <Form>
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Initial Investment (₹)</Form.Label>
-              <Col sm={6}>
+              <Form.Label column lg={6}>Initial Investment (₹)</Form.Label>
+              <Col lg={6}>
                 <Form.Control type="text" value={initialInvestment} onChange={(e) => setInitialInvestment(e.target.value)} />
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Expected Return Rate (% p.a.)</Form.Label>
-              <Col sm={6}>
+              <Form.Label column lg={6}>Expected Return Rate (% p.a.)</Form.Label>
+              <Col lg={6}>
                 <Form.Control type="text" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} />
               </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm={6}>Time Period (Years)</Form.Label>
-              <Col sm={6}>
+              <Form.Label column lg={6}>Time Period (Years)</Form.Label>
+              <Col lg={6}>
                 <Form.Control type="text" value={period} onChange={(e) => setPeriod(e.target.value)} />
               </Col>
             </Form.Group>

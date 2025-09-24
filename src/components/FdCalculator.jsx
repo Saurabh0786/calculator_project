@@ -38,20 +38,20 @@ import React, { useState, useEffect } from 'react';
               <Card.Title className="text-center mb-4">Fixed Deposit (FD) Calculator</Card.Title>
               <Form>
                 <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={6}>Investment Amount (₹)</Form.Label>
-                  <Col sm={6}>
+                  <Form.Label column lg={6}>Investment Amount (₹)</Form.Label>
+                  <Col lg={6}>
                     <Form.Control type="text" value={principal} onChange={(e) => setPrincipal(e.target.value)} />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={6}>Interest Rate (% p.a.)</Form.Label>
-                  <Col sm={6}>
+                  <Form.Label column lg={6}>Interest Rate (% p.a.)</Form.Label>
+                  <Col lg={6}>
                     <Form.Control type="text" value={interestRate} onChange={(e) => setInterestRate(e.target.value)} />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={6}>Time Period (Years)</Form.Label>
-                  <Col sm={6}>
+                  <Form.Label column lg={6}>Time Period (Years)</Form.Label>
+                  <Col lg={6}>
                     <Form.Control type="text" value={period} onChange={(e) => setPeriod(e.target.value)} />
                   </Col>
                 </Form.Group>
