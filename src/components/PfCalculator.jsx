@@ -61,7 +61,7 @@ const PfCalculator = () => {
   }, [basicSalary, currentAge, retirementAge, currentEpfBalance, annualSalaryIncrease, interestRate]);
 
   return (
-    <Card className="calculator-card">
+    <Card className="calculator-card calculator-card-lg">
       <Card.Body>
         <Card.Title className="text-center mb-4">Provident Fund (PF) Calculator</Card.Title>
         <Form>
